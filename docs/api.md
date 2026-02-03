@@ -1,11 +1,16 @@
 ﻿# API Spec (v1)
 
 ## Auth
-- POST /auth/signup
-- POST /auth/login         -> returns accessToken + refreshToken
-- POST /auth/refresh       -> returns new accessToken
-- POST /auth/logout
-- GET  /auth/me
+- POST /api/auth/signup
+- POST /api/auth/login         -> returns accessToken, sets HttpOnly refresh cookie
+- POST /api/auth/refresh       -> rotates refresh cookie, returns new accessToken
+- POST /api/auth/logout        -> revokes refresh session + clears cookie
+- GET  /api/auth/me            -> requires Bearer access token
+
+### Auth flow
+1. **Signup/Login**: receive an access token in JSON (and `Authorization` header). Refresh token is stored as HttpOnly cookie.
+2. **Refresh**: call `/api/auth/refresh` with cookie; server rotates refresh token and returns a new access token. The refresh cookie is scoped to `/api/auth/refresh`.
+3. **Logout**: call `/api/auth/logout` to revoke current refresh session.
 
 ## Groups
 - POST /groups
