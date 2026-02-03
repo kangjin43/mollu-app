@@ -1,0 +1,15 @@
+﻿services:
+  db:
+    image: postgres:16
+    container_name: mollu_pg
+    environment:
+      POSTGRES_USER: app
+      POSTGRES_PASSWORD: apppw
+      POSTGRES_DB: appdb
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
