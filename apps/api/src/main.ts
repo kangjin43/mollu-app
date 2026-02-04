@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import { BadRequestException, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
@@ -6,11 +7,13 @@ import { AppModule } from './app.module';
 import { HttpExceptionFilter } from './common/filters/http-exception.filter';
 
 async function bootstrap() {
+  console.log('DATABASE_URL in Nest:', process.env.DATABASE_URL);
+
   const app = await NestFactory.create(AppModule);
-  const isProd = process.env.NODE_ENV === 'production';
 
   app.setGlobalPrefix('api');
   app.useGlobalFilters(new HttpExceptionFilter());
+
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
@@ -29,13 +32,17 @@ async function bootstrap() {
   );
 
   app.use(cookieParser());
+
   app.enableCors({
-    origin: (process.env.CORS_ORIGIN ?? 'http://localhost:3000,http://localhost:5173,http://localhost:19006')
+    origin: (process.env.CORS_ORIGIN ??
+      'http://localhost:3000,http://localhost:5173,http://localhost:19006')
       .split(',')
       .map((origin) => origin.trim())
       .filter(Boolean),
     credentials: true,
   });
+
+  const isProd = process.env.NODE_ENV === 'production';
 
   if (!isProd) {
     const config = new DocumentBuilder()
@@ -53,4 +60,5 @@ async function bootstrap() {
   const port = Number(process.env.PORT ?? 3000);
   await app.listen(port);
 }
+
 bootstrap();
