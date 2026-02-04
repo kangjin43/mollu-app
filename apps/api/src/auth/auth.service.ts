@@ -117,8 +117,7 @@ export class AuthService {
       { sub: userId, email },
       {
         secret: process.env.JWT_ACCESS_SECRET ?? 'dev-access-secret',
-        expiresIn:
-          process.env.JWT_ACCESS_EXPIRES_IN ?? DEFAULT_ACCESS_TOKEN_TTL,
+        expiresIn: (process.env.JWT_ACCESS_EXPIRES_IN ?? DEFAULT_ACCESS_TOKEN_TTL) as any,
       },
     );
 
@@ -126,8 +125,7 @@ export class AuthService {
       { sub: userId, email, jti: randomUUID(), typ: 'refresh' },
       {
         secret: process.env.JWT_REFRESH_SECRET ?? 'dev-refresh-secret',
-        expiresIn:
-          process.env.JWT_REFRESH_EXPIRES_IN ?? DEFAULT_REFRESH_TOKEN_TTL,
+        expiresIn: (process.env.JWT_REFRESH_EXPIRES_IN ?? DEFAULT_REFRESH_TOKEN_TTL) as any,
       },
     );
 
