@@ -14,7 +14,7 @@ import type { CookieOptions, Request, Response } from 'express';
 
 import { AuthService } from './auth.service';
 import { SignupDto } from '../users/dto/signup.dto';
-import { LoginDto } from './dto/login.dto';
+import { LoginDto } from '../users/dto/login.dto';
 
 @ApiTags('auth')
 @Controller('auth')
